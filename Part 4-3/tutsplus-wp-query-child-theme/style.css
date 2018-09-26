@@ -1,0 +1,12 @@
+/*
+Theme Name:     Tutsplus WP_Query theme
+Theme URI:      http://rachelmccollin.co.uk/
+Description:    Theme to support tutsplus course on WP_Query. Child theme for the Blog Way theme.
+Author:         Rachel McCollin
+Author URI:     http://rachelmccollin.co.uk/
+Template:       blog-way
+Version:        4.3
+*/
+
+@import url("../blog-way/style.css");
+

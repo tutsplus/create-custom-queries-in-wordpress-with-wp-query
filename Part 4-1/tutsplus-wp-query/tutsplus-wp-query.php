@@ -1,0 +1,100 @@
+<?php
+/**
+* Plugin Name:   Tuts+ WP Query Plugin
+* Plugin URI:    http://rachelmccollin.co.uk/
+* Description:   Plugin to support tuts+ course on WP_Query.
+* Version:       4.1
+* Author:        Rachel McCollin
+* Author URI:    http://rachelmccollin.co.uk
+*
+*
+*/
+
+/*****************************************************************************************
+tutsplus_wp_query - outputs five latest posts at the bottom of every page on the site
+******************************************************************************************/
+function tutsplus_wp_query() {
+	
+	// query parameters
+	$args = array(
+		'posts_per_page' => 5
+	);
+	
+	// the query
+	$query = new WP_Query( $args );
+	
+	//the loop
+	if( $query-> have_posts() ) {
+		
+		echo'<h3>';
+			_e( 'Latest Posts', 'tutsplus' );
+		echo'</h3>';
+		
+		echo'<ul>';
+			
+			while( $query->have_posts() ) {
+				$query->the_post();
+				
+				echo'<li>';
+					echo '<a href="' . get_the_permalink() . '">' . get_the_title() . '</a>';
+				echo'</li>';
+				
+			}
+			
+		echo'</ul>';
+		
+		wp_reset_postdata();
+		
+	}
+	
+}
+add_action( 'blog_way_after_content', 'tutsplus_wp_query' );
+
+/*****************************************************************************************
+tutsplus_featured_query - outputs five latest posts at the bottom of every page on the site
+******************************************************************************************/
+function tutsplus_featured_query() {
+	
+	//query parameters
+	$args = array(
+		'posts_per_page' => 1,
+		'orderby' => 'rand',
+		'category_name' => 'featured'
+	);
+	
+	//the query
+	$query = new WP_Query( $args );
+	
+	//the loop
+	if( $query->have_posts() ) {
+		
+		echo '<aside class="featured-post container">';
+		
+			while( $query->have_posts() ) {
+				$query->the_post();
+				
+				echo '<h3>Featured Post - <a href="' . get_the_permalink() . ' ">' . get_the_title() . '</a></h3>';
+				
+				if( has_post_thumbnail() ) {
+					
+					echo '<a href="' . get_the_permalink() . ' ">';
+						the_post_thumbnail( 'medium', array(
+							'class' => 'alignleft'
+						));
+					echo '</a>';
+					
+				} 
+				
+				the_excerpt();
+				
+			}
+		
+		echo'</aside>';
+		
+		wp_reset_postdata();
+		
+		
+	}
+	
+}
+add_action( 'blog_way_before_content', 'tutsplus_featured_query' );
